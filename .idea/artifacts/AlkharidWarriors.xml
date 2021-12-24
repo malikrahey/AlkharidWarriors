@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="AlkharidWarriors">
+    <output-path>$PROJECT_DIR$/out/artifacts/AlkharidWarriors</output-path>
+    <root id="archive" name="AlkharidWarriors.jar">
+      <element id="module-output" name="AlkharidWarriors" />
+    </root>
+  </artifact>
+</component>
