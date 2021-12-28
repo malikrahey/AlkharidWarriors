@@ -27,9 +27,7 @@ public class AlkharidWarriors extends Script {
     private State state;
 
 
-    private final Area ALKHARID_PALACE = new Area(3282, 3177, 3302, 3167);;
-    private final Area GOBLINS_AREA = new Area(3242, 3242, 3257, 3229);
-    private final Area LUMBRIDGE_AREA = new Area(3218, 3222, 3225, 3213);
+
 
 
     private final BasicStroke stroke1 = new BasicStroke(1);
@@ -100,17 +98,19 @@ public class AlkharidWarriors extends Script {
         int strengthDifference = strengthLevel - startingStrengthLevel;
         int defenceDifference = defenceLevel - startingDefenceLevel;
 
-        g.setColor(Color.WHITE);
-        g.fillRoundRect(0, 0, 500, 140, 16, 16);
+        g.setColor(Color.RED);
+        g.fillRoundRect(5, 341, 511, 136, 16, 16);
         g.setColor(Color.BLACK);
         g.setStroke(stroke1);
-        g.drawRoundRect(0, 0, 500, 140, 16, 16);
+        g.drawRoundRect(5, 341, 511, 136, 16, 16);
         g.setFont(font1);
-        g.drawString("Time Running: " + getRunTime(), 50, 50);
-        g.drawString("Attack Level: " + String.valueOf(attackLevel) + "(+" + String.valueOf(attackDifference) + ")", 50, 70);
-        g.drawString("Strength Level: " + String.valueOf(strengthLevel) + "(+" + String.valueOf(strengthDifference) + ")", 50, 90);
-        g.drawString("Defence Level: " + String.valueOf(defenceLevel) + "(+" + String.valueOf(defenceDifference) + ")", 50, 110);
-        g.drawString("Status : " + state.toString(), 50, 130);
+        g.setColor(Color.BLACK);
+        g.drawString("Time Running: " + getRunTime(), 20, 363);
+        g.drawString("Status : " + state.toString(), 20, 463);
+        g.drawString("Attack Level: " + String.valueOf(attackLevel) + " (+" + String.valueOf(attackDifference) + ")", 20, 390);
+        g.drawString("Strength Level: " + String.valueOf(strengthLevel) + " (+" + String.valueOf(strengthDifference) + ")", 20, 416);
+        g.drawString("Defence Level: " + String.valueOf(defenceLevel) + " (+" + String.valueOf(defenceDifference) + ")", 20, 436);
+
         g.setFont(font2);
 
         Point m = getMouse().getPosition();
@@ -122,19 +122,21 @@ public class AlkharidWarriors extends Script {
     private void initializeState() {
 
         Position position = myPosition();
-        if(LUMBRIDGE_AREA.contains(position)) {
+        if(Pather.LUMBRIDGE_AREA.contains(position)) {
             state = State.WALKING_TO_GOBLINS;
-        } else if(ALKHARID_PALACE.contains(position)) {
+        } else if(Pather.ALKHARID_PALACE.contains(position)) {
             state = State.ATTACK;
-        } else if(GOBLINS_AREA.contains(position)) {
+        } else if(Pather.GOBLINS_AREA.contains(position)) {
             state = State.GOBLINS;
+        } else if(Pather.ALKHARID_AREA.contains(position)) {
+            state = State.WALKING_TO_WARRIORS;
         }
         else {
             if(getMagic().getCurrentBook().equals(Magic.Book.NORMAL)) {
                 if(getMagic().castSpell(Spells.NormalSpells.HOME_TELEPORT)){
                     state = State.WALKING_TO_GOBLINS;
                 } else {
-                    getWalking().webWalk(ALKHARID_PALACE);
+                    getWalking().webWalk(Pather.ALKHARID_PALACE);
                     state = State.ATTACK;
                 }
             }

@@ -23,15 +23,18 @@ public class KillGoblinsTask extends Task {
         if(amountOfCoins >= 10) {
             state = State.WALKING_TO_WARRIORS;
         } else {
+
+            GroundItems items = script.getGroundItems();
+            items.getAll().forEach(item -> {
+                if(item.getName().equals("Coins")) {
+                    item.interact("Take");
+                    Sleep.sleepUntil(() -> !script.myPlayer().isMoving(), 5000);
+                }
+            });
+
             if(!script.getCombat().isFighting() && !script.myPlayer().isMoving()) {
 
-                GroundItems items = script.getGroundItems();
-                items.getAll().forEach(item -> {
-                    if(item.getName().equals("Coins")) {
-                        item.interact("Take");
-                        Sleep.sleepUntil(() -> !item.exists() || !script.myPlayer().isAnimating(), 5000);
-                    }
-                });
+
                 NPC goblin = script.getNpcs().closest(npc -> npc.getName().equals("Goblin") && npc.isAttackable() && !npc.isUnderAttack());
                 goblin.interact("Attack");
                 script.getMouse().moveOutsideScreen();
